@@ -1,0 +1,212 @@
+module inv11(x,y); 
+input x; 
+output y; 
+wire vdd, gnd; 
+assign vdd = 1'b1; 
+assign gnd = 1'b0; 
+pmos p1 (y,vdd,x); /* pmos name(drain, 
+source, gate)*/ 
+nmos n1 (y,gnd,x); /* nmos name(drain, 
+source, gate)*/ 
+endmodule 
+
+
+module inv11_tb; 
+reg x1; 
+wire y1; 
+inv11 inv1 (x1,y1); 
+initial begin 
+x1 = 1'b0; #1 
+x1 = 1'b1; #2 
+$finish; 
+end 
+endmodule
+
+...........................................................................................................................................................................
+
+
+
+module buff(x,y); 
+input x; 
+output y; 
+wire q,vdd, gnd; 
+assign vdd = 1'b1; 
+assign gnd = 1'b0; 
+pmos p1 (q,vdd,x); /* pmos name(drain, source, 
+gate)*/ 
+pmos p2 (y,vdd,q); 
+nmos n1 (q,gnd,x); /* pmos name(drain, source, 
+gate)*/ 
+nmos n2 (y,gnd,q); 
+endmodule 
+
+
+
+module buff_tb; 
+reg X1; 
+wire Y1; 
+buff buf1 (X1,Y1); 
+initial begin 
+X1=1'b0; #1 
+X1=1'b1; #2 
+$finish; 
+end 
+endmodule
+
+
+.......................................................................................................................................................................
+
+
+
+module nannd (x,y,z); 
+input x,y; 
+output z; 
+wire q, vdd, gnd; 
+assign vdd = 1'b1; 
+assign gnd = 1'b0; 
+pmos p1 (z,vdd,x); /* pmos name(drain, source, 
+gate)*/ 
+pmos p2 (z,vdd,y); 
+nmos n1 (z,q,x); /* nmos name(drain, source, gate)*/ 
+nmos n2 (q,gnd,y); 
+endmodule 
+
+
+
+
+module nannd_tb; 
+reg x1, y1; 
+wire z1; 
+nannd nand1 (x1,y1,z1); 
+initial begin 
+x1 = 1'b0; y1 = 1'b0; #1 
+x1 = 1'b0; y1 = 1'b1; #1 
+x1 = 1'b1; y1 = 1'b0; #1 
+x1 = 1'b1; y1 = 1'b1; #2 
+$finish; 
+end 
+endmodule
+
+
+........................................................................................................................................................................
+
+
+
+module norr (x,y,z); 
+input x,y; 
+output z; 
+wire q, vdd, gnd; 
+assign vdd = 1'b1; 
+assign gnd = 1'b0; 
+pmos p1 (q,vdd,x); /* pmos name(drain, source, 
+gate)*/ 
+pmos p2 (z,q,y); 
+nmos n1 (z,gnd,x); /* pmos name(drain, source, 
+gate)*/ 
+nmos n2 (z,gnd,y); 
+endmodule 
+
+
+
+
+module norr_tb; 
+reg x1, y1; 
+wire z1; 
+norr nor1 (x1,y1,z1); 
+initial begin 
+x1 = 1'b0; y1 = 1'b0; #1 
+x1 = 1'b0; y1 = 1'b1; #1 
+x1 = 1'b1; y1 = 1'b0; #1 
+x1 = 1'b1; y1 = 1'b1; #2 
+$finish; 
+end 
+endmodule
+
+
+........................................................................................................................................................................
+
+
+
+module tgate(a,s,y); 
+input a,s; 
+output y; 
+pmos u1(y,a,~s); /* pmos name(drain, source, 
+gate)*/ 
+nmos u2(y,a,s); /* nmos name(drain, source, 
+gate)*/ 
+endmodule 
+
+
+
+
+module tgate_tb; 
+reg in, sel; 
+wire out; 
+tgate u3(in,sel,out); 
+initial begin 
+in = 1'b0 ; sel = 1'b0 ; #10 
+in = 1'b1 ; sel = 1'b0 ; #10 
+in = 1'b0 ; sel = 1'b0 ; #10 
+in = 1'b1 ; sel = 1'b0 ; #10 
+in = 1'b0 ; sel = 1'b1 ; #10 
+in = 1'b1 ; sel = 1'b1 ; #10 
+in = 1'b0 ; sel = 1'b1 ; #10 
+in = 1'b1 ; sel = 1'b1 ; #10 
+$finish; 
+end 
+endmodule
+
+
+......................................................................................................................................................................
+
+
+
+module fmux(x0,x1,x2,x3,s0,s1,o); 
+input x0,x1,x2,x3,s0,s1; 
+output o; 
+wire w1,w2; 
+nmos n1(w1,x0,~s1); 
+pmos p1(w1,x0,s1); 
+nmos n2(w1,x1,s1); 
+pmos p2(w1,x1,~s1); 
+nmos n3(w2,x2,~s1); 
+pmos p3(w2,x2,s1); 
+nmos n4(w2,x3,s1); 
+pmos p4(w2,x3,~s1); 
+nmos n5(o,w1,~s0); 
+pmos p5(o,w1,s0); 
+nmos n6(o,w2,s0); 
+pmos p6(o,w2,~s0); 
+endmodule 
+
+
+
+
+module fmux_tb; 
+reg x0,x1,x2,x3,s0,s1; 
+wire o; 
+fmux m1(x0,x1,x2,x3,s0,s1,o); 
+initial begin 
+x0=1'b0;x1=1'b1;x2=1'b1;x3=1'b1;s0=1'b0;s1=1'b0;#10; 
+x0=1'b0;x1=1'b1;x2=1'b0;x3=1'b0;s0=1'b0;s1=1'b1;#10; 
+x0=1'b1;x1=1'b1;x2=1'b0;x3=1'b1;s0=1'b1;s1=1'b0;#10; 
+x0=1'b0;x1=1'b0;x2=1'b0;x3=1'b1;s0=1'b1;s1=1'b1;#10; 
+ $finish; 
+end 
+endmodule
+
+
+
+
+.....................................................................................................................................................................
+
+
+
+
+
+
+...................
+
+
+
+
