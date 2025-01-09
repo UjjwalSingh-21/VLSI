@@ -21,7 +21,7 @@ module FIFObuffer_tb;
 
  
         WR = 1;
-        repeat (5) begin
+        repeat (5) begin                                 //#20 datain=22; same goes for other values and no end
             #20 dataIn = dataIn + 1;
         end
         WR = 0;
